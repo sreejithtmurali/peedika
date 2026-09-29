@@ -38,8 +38,9 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => OnBoarding(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation,child: child,),
-        transitionDuration: Duration(seconds: 1)
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        transitionDuration: Duration(milliseconds: 300),
       ),
     );
   }
