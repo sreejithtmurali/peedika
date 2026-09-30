@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peedika/views/verifyotp.dart';
 
 class Sendotp extends StatefulWidget {
   const Sendotp({super.key});
@@ -11,6 +12,8 @@ class Sendotp extends StatefulWidget {
 }
 
 class _SendotpState extends State<Sendotp> {
+  TextEditingController controller=TextEditingController();
+  final key=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,24 +122,31 @@ class _SendotpState extends State<Sendotp> {
                       Flexible(
                         flex: 6,
                         fit: .tight,
-                        child: TextFormField(
-                          maxLength: 10,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            border: OutlineInputBorder(
-                              borderRadius: .circular(23),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            prefixIcon: Icon(
-                              Icons.phone_android,
-                              color: Color(0xff707A65),
-                            ),
-                            hintText: "0000000000",
-                            hintStyle: TextStyle(
-                              color: Color(0xff707A65),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                        child: Form(
+                          key: key,
+                          child: TextFormField(
+                            validator: (v){
+                              return v!.length!=10?"enter valid phone number":null;
+                            },
+                            controller: controller,
+                            maxLength: 10,
+                            decoration: InputDecoration(
+                              counterText: '',
+                              border: OutlineInputBorder(
+                                borderRadius: .circular(23),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              prefixIcon: Icon(
+                                Icons.phone_android,
+                                color: Color(0xff707A65),
+                              ),
+                              hintText: "0000000000",
+                              hintStyle: TextStyle(
+                                color: Color(0xff707A65),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
@@ -148,7 +158,11 @@ class _SendotpState extends State<Sendotp> {
                 ElevatedButton.icon(
                   icon: Icon(Icons.arrow_forward),
                   iconAlignment: .end,
-                  onPressed: () {},
+                  onPressed: () {
+                   if(key.currentState!.validate()){
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => Verifyotp(phone:controller.text.trim()),));
+                   }
+                  },
                   label: Text("Get OTP"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
