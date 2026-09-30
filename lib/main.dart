@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peedika/views/dashboard.dart';
+import 'package:peedika/views/home.dart';
+import 'package:peedika/views/sendotp.dart';
 import 'package:peedika/views/splash.dart';
 
 void main() {
@@ -11,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Splash(),
+      home: Sendotp(),
     );
   }
 }

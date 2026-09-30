@@ -11,6 +11,8 @@ class Shops extends StatefulWidget {
 class _ShopsState extends State<Shops> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      backgroundColor: Colors.red.shade300,
+    );
   }
 }
