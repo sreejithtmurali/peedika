@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peedika/services/userservice.dart';
+import 'package:peedika/views/dashboard.dart';
 import 'package:peedika/views/onboarding.dart';
 
 class Splash extends StatefulWidget {
@@ -33,11 +35,14 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   }
 
   Future<void> nav() async {
+
+    bool islogin=await UserService().isLoggedIn();
+
     await Future.delayed(Duration(seconds: 4));
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => OnBoarding(),
+        pageBuilder: (context, animation, secondaryAnimation) =>islogin?Dashboard():OnBoarding(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         transitionDuration: Duration(milliseconds: 300),

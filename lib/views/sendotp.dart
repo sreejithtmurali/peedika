@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peedika/services/apiservice.dart';
 import 'package:peedika/views/verifyotp.dart';
 
 class Sendotp extends StatefulWidget {
@@ -12,8 +13,10 @@ class Sendotp extends StatefulWidget {
 }
 
 class _SendotpState extends State<Sendotp> {
-  TextEditingController controller=TextEditingController();
-  final key=GlobalKey<FormState>();
+  TextEditingController controller = TextEditingController();
+  final key = GlobalKey<FormState>();
+  Apiservice apiservice = Apiservice();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +94,6 @@ class _SendotpState extends State<Sendotp> {
                 ),
                 SizedBox(height: 8),
                 Container(
-
                   child: Row(
                     children: [
                       Flexible(
@@ -125,8 +127,10 @@ class _SendotpState extends State<Sendotp> {
                         child: Form(
                           key: key,
                           child: TextFormField(
-                            validator: (v){
-                              return v!.length!=10?"enter valid phone number":null;
+                            validator: (v) {
+                              return v!.length != 10
+                                  ? "enter valid phone number"
+                                  : null;
                             },
                             controller: controller,
                             maxLength: 10,
@@ -158,10 +162,32 @@ class _SendotpState extends State<Sendotp> {
                 ElevatedButton.icon(
                   icon: Icon(Icons.arrow_forward),
                   iconAlignment: .end,
-                  onPressed: () {
-                   if(key.currentState!.validate()){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => Verifyotp(phone:controller.text.trim()),));
-                   }
+                  onPressed: () async {
+                    if (key.currentState!.validate()) {
+                      final response = await apiservice.getOtp(
+                        controller.text.trim(),
+                      );
+                      if (mounted) {
+                            if (response!.success == true)
+                            {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            Verifyotp(phone: controller.text.trim()),
+                                      ),
+                                    );
+                            } else
+                            {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("${response.message}"),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                            }
+                      }
+                    }
                   },
                   label: Text("Get OTP"),
                   style: ElevatedButton.styleFrom(
